@@ -1,0 +1,43 @@
+{
+  "name": "chrome-launch",
+  "version": "1.0.0",
+  "description": "Light cross-platform launcher for Google Chrome",
+  "main": "index.js",
+  "license": "MIT",
+  "author": {
+    "name": "Hugh Kennedy",
+    "email": "hughskennedy@gmail.com",
+    "url": "http://hughsk.io/"
+  },
+  "scripts": {
+    "test": "node test | tap-spec"
+  },
+  "devDependencies": {
+    "leaked-handles": "^4.2.0",
+    "mkdirp": "^0.5.0",
+    "tap-spec": "^2.1.2",
+    "tape": "^3.0.3"
+  },
+  "dependencies": {
+    "chrome-location": "^1.2.0",
+    "quick-tmp": "0.0.0",
+    "rimraf": "^2.2.8",
+    "shallow-copy": "0.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/hughsk/chrome-launch.git"
+  },
+  "keywords": [
+    "chrome",
+    "launch",
+    "process",
+    "spawn",
+    "browser",
+    "client"
+  ],
+  "homepage": "https://github.com/hughsk/chrome-launch",
+  "bugs": {
+    "url": "https://github.com/hughsk/chrome-launch/issues"
+  }
+}
