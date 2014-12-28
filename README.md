@@ -10,7 +10,7 @@ Light cross-platform launcher for Google Chrome.
 
 [![NPM](https://nodei.co/npm/chrome-launch.png)](https://nodei.co/npm/chrome-launch/)
 
-### `process = spawn([options])`
+### `process = spawn(url, [options])`
 
 Spawns a new Chrome instance in a separate process using
 [`child_process.spawn`](http://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options).
