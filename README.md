@@ -23,6 +23,7 @@ Options include:
 * `dir`: user configuration directory to use. By default, one will be
   created and then removed when the process is killed.
 * `env`: environment variables to use. Defaults to `process.env`.
+* `nuke`: remove `opts.dir` when the process exits.
 
 The following command-line options are passed to Chrome in addition
 to the ones you supply:

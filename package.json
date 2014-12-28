@@ -13,8 +13,10 @@
     "test": "node test | tap-spec"
   },
   "devDependencies": {
+    "is-running": "^1.0.5",
     "leaked-handles": "^4.2.0",
     "mkdirp": "^0.5.0",
+    "shell-quote": "^1.4.2",
     "tap-spec": "^2.1.2",
     "tape": "^3.0.3"
   },

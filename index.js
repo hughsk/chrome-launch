@@ -7,6 +7,8 @@ const rimraf = require('rimraf')
 module.exports = launchChrome
 
 function launchChrome(uri, opts) {
+  var closed = false
+
   opts = Array.isArray(opts) ? { args: opts } : opts
   opts = copy(opts || {})
 
@@ -22,12 +24,26 @@ function launchChrome(uri, opts) {
     , '--user-data-dir=' + tmp
   ].concat(opts.args || [])
 
-  return spawn(chrome, args, {
+  var ps = spawn(chrome, args, {
     env: opts.env || process.env
-  }).once('close', function() {
-    // don't remove tmpdir automatically if
-    // supplied a custom one, don't want it getting
-    // nuked unknowingly!
-    if (!opts.dir) rimraf.sync(tmp)
   })
+
+  // don't remove tmp dir automatically if
+  // supplied a custom one, don't want it getting
+  // nuked unknowingly!
+  if (!opts.dir || opts.nuke) {
+    process.on('exit', onClose)
+    process.on('close', onClose)
+    ps.on('close', onClose)
+  }
+
+  return ps
+
+  function onClose() {
+    if (closed) return; closed = true
+    ps.kill()
+    rimraf.sync(tmp)
+    process.removeListener('exit', onClose)
+    process.removeListener('close', onClose)
+  }
 }

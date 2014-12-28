@@ -1,12 +1,15 @@
 require('leaked-handles')
 
-const mkdirp = require('mkdirp')
-const rimraf = require('rimraf')
-const http   = require('http')
-const path   = require('path')
-const test   = require('tape')
-const launch = require('./')
-const fs     = require('fs')
+const exec    = require('child_process').exec
+const quote   = require('shell-quote').quote
+const running = require('is-running')
+const mkdirp  = require('mkdirp')
+const rimraf  = require('rimraf')
+const http    = require('http')
+const path    = require('path')
+const test    = require('tape')
+const launch  = require('../')
+const fs      = require('fs')
 
 test('chrome-launch', function(t) {
   var server = http.createServer()
@@ -66,5 +69,25 @@ test('chrome-launch: opts.tmp', function(t) {
     t.pass('closing server')
     chrome.kill()
     server.close()
+  })
+})
+
+test('chrome-launch: process.exit', function(t) {
+  var tmp = path.join(__dirname, '.tmpdir')
+  var cmd = quote([
+      process.execPath
+    , path.join(__dirname, 'exec.js')
+    , tmp
+  ])
+
+  exec(cmd, function(err, pid) {
+    if (err) return t.ifError(err)
+
+    t.ok(!fs.existsSync(tmp))
+    running(parseInt(pid, 10), function(err, live) {
+      if (err) return t.ifError(err)
+      t.ok(!live, 'process has been killed')
+      t.end()
+    })
   })
 })
