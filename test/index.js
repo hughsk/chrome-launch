@@ -35,7 +35,7 @@ test('chrome-launch', function(t) {
   })
 })
 
-test('chrome-launch: opts.tmp', function(t) {
+test('chrome-launch: opts.dir', function(t) {
   var tmp    = path.resolve(__dirname, '.tmpdir')
   var server = http.createServer()
   var chrome = null
@@ -47,7 +47,7 @@ test('chrome-launch: opts.tmp', function(t) {
     if (err) return t.ifError(err)
 
     chrome = launch('http://localhost:'+server.address().port, {
-      tmp: tmp
+      dir: tmp
     })
 
     chrome.once('close', function() {
