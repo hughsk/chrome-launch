@@ -42,8 +42,13 @@ function launchChrome(uri, opts) {
   function onClose() {
     if (closed) return; closed = true
     ps.kill()
-    rimraf.sync(tmp)
     process.removeListener('exit', onClose)
     process.removeListener('close', onClose)
+
+    try {
+      rimraf.sync(tmp)
+    } catch(e) {
+      rimraf.sync(tmp)
+    }
   }
 }
