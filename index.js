@@ -24,7 +24,7 @@ function launchChrome(uri, opts) {
 
   return spawn(chrome, args, {
     env: opts.env || process.env
-  }).once('kill', function() {
+  }).once('close', function() {
     // don't remove tmpdir automatically if
     // supplied a custom one, don't want it getting
     // nuked unknowingly!
