@@ -35,12 +35,25 @@ function launchChrome(uri, opts) {
     process.on('exit', onClose)
     process.on('close', onClose)
     ps.on('close', onClose)
+    ps.on('exit', onClose)
   }
 
   return ps
 
-  function onClose() {
-    if (closed) return; closed = true
+  function onClose () {
+    if (closed) {
+      // chrome sometimes doesn't exit cleanly https://code.google.com/p/chromium/issues/detail?id=338000
+      // so, if we get a second call, assume this has happend and kill the whole
+      // process. We'll wait a reasonable interval just to be sure everything is
+      // actually done.
+      return void setTimeout(function () {
+        process.exit(0)
+      }, 1000)
+    }
+    else {
+      closed = true
+    }
+
     ps.kill()
     process.removeListener('exit', onClose)
     process.removeListener('close', onClose)
