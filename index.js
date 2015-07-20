@@ -28,27 +28,28 @@ function launchChrome(uri, opts) {
     env: opts.env || process.env
   })
 
-  // don't remove tmp dir automatically if
-  // supplied a custom one, don't want it getting
-  // nuked unknowingly!
-  if (!opts.dir || opts.nuke) {
-    process.on('exit', onClose)
-    process.on('close', onClose)
-    ps.on('close', onClose)
-  }
+  process.on('exit', onClose)
+  process.on('close', onClose)
+  ps.on('close', onClose)
 
   return ps
 
   function onClose() {
     if (closed) return; closed = true
-    ps.kill()
+    if (opts.kill == null || opts.kill)
+      ps.kill()
     process.removeListener('exit', onClose)
     process.removeListener('close', onClose)
 
-    try {
-      rimraf.sync(tmp)
-    } catch(e) {
-      rimraf.sync(tmp)
+    // don't remove tmp dir automatically if
+    // supplied a custom one, don't want it getting
+    // nuked unknowingly!
+    if (!opts.dir || opts.nuke) {
+      try {
+        rimraf.sync(tmp)
+      } catch(e) {
+        rimraf.sync(tmp)
+      }
     }
   }
 }
