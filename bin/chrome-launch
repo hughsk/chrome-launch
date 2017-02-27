@@ -1,0 +1,28 @@
+#!/usr/bin/env node
+
+const program = require('commander')
+const launchChrome = require('../')
+const pkg = require('../package.json')
+
+program
+  .version(pkg.version)
+  .usage('[options] <url> -- [args]')
+  .option('--dir <path>', 'user configuration directory to use. By default, one will be created and then removed when the process is killed')
+  .option('--nuke', 'remove `dir` when the process exits')
+
+program.on('--help', function () {
+  console.log('  Arguments:')
+  console.log('')
+  console.log('    [args] are additional command-line arguments to pass to Chrome. See here for a full list:')
+  console.log('    http://peter.sh/experiments/chromium-command-line-switches/')
+  console.log('')
+  console.log('  Examples:')
+  console.log('')
+  console.log('    This demonstrates how to load an unpacked extension into an isolated instance of Chrome without same-origin checking:')
+  console.log('')
+  console.log('    chrome-launch https://domain.tld/path -- --load-extension=path/to/extension --disable-web-security')
+})
+program.parse(process.argv)
+
+const {dir, nuke, args: [url = '', ...args]} = program
+launchChrome(url, {dir, nuke, args})
