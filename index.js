@@ -17,7 +17,7 @@ function launchChrome(uri, opts) {
       uri
     , '--no-first-run'
     , '--no-default-browser-check'
-    , '--disable-translate'
+    , '--disable-features=Translate'
     , '--disable-default-apps'
     , '--disable-popup-blocking'
     , '--disable-zero-browsers-open-for-tests'
